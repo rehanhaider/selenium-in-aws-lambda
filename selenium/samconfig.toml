@@ -1,0 +1,10 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "selenium"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-10au7y56c11fr"
+s3_prefix = "selenium"
+region = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+image_repositories = ["SeleniumFunction=231871475778.dkr.ecr.us-east-1.amazonaws.com/plugins"]
