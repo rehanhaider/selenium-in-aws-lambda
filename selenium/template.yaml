@@ -9,36 +9,36 @@ Description: >
 Globals:
   Function:
     Timeout: 120
-    MemorySize: 2048
+    MemorySize: 128
 
 Resources:
-  HelloWorldFunction:
+  SeleniumFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       PackageType: Image
       Architectures:
         - x86_64
       Events:
-        HelloWorld:
+        Selenium:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
-            Path: /hello
+            Path: /selenium
             Method: get
     Metadata:
       Dockerfile: Dockerfile
-      DockerContext: ./hello_world
+      DockerContext: ./src
       DockerTag: python3.9-v1
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-  HelloWorldApi:
-    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
-  HelloWorldFunction:
-    Description: "Hello World Lambda Function ARN"
-    Value: !GetAtt HelloWorldFunction.Arn
-  HelloWorldFunctionIamRole:
-    Description: "Implicit IAM Role created for Hello World function"
-    Value: !GetAtt HelloWorldFunctionRole.Arn
+  SeleniumApi:
+    Description: "API Gateway endpoint URL for Prod stage for Seleniumc function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/selenium/"
+  SeleniumFunction:
+    Description: "Selenium Lambda Function ARN"
+    Value: !GetAtt SeleniumFunction.Arn
+  SeleniumFunctionIamRole:
+    Description: "Implicit IAM Role created for Selenium function"
+    Value: !GetAtt SeleniumFunctionRole.Arn

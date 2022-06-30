@@ -7,4 +7,4 @@ s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-10ou7y86c11sr"
 s3_prefix = "selenium"
 region = "us-east-1"
 capabilities = "CAPABILITY_IAM"
-image_repositories = ["HelloWorldFunction=268674271179.dkr.ecr.us-east-1.amazonaws.com/selenium8e00596a/helloworldfunction19d43fc4repo"]
+image_repositories = ["SeleniumFunction=268674271179.dkr.ecr.us-east-1.amazonaws.com/selenium8e00596a/seleniumfunction930ef00frepo"]
