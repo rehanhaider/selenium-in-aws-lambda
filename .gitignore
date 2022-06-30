@@ -127,3 +127,8 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+
+# Stopping devcontainer changes
+# Local devcontainer contains mounted volumes which is too complicated to explain for multiple OSs.
+.devcontainer/devcontainer.json
