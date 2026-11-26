@@ -1,3 +1,1 @@
 selenium
-requests
-pandas
