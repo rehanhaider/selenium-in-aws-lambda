@@ -16,13 +16,16 @@ RUN /usr/bin/bash /tmp/install-browser.sh
 
 FROM public.ecr.aws/lambda/python:3.9 as base
 
+# Shared libraries Chrome and chromedriver link against that the base image
+# lacks, plus fonts for text rendering
 COPY chrome-deps.txt /tmp/
-RUN yum install -y $(cat /tmp/chrome-deps.txt)
+RUN yum install -y -q $(cat /tmp/chrome-deps.txt) \
+    && yum clean all \
+    && rm -rf /var/cache/yum
 
 # Install Python dependencies for function
 COPY requirements.txt /tmp/
-RUN python3 -m pip install --upgrade pip -q
-RUN python3 -m pip install -r /tmp/requirements.txt -q 
+RUN python3 -m pip install --no-cache-dir -q -r /tmp/requirements.txt
 
 
 COPY --from=stage /opt/chrome /opt/chrome
