@@ -1,8 +1,14 @@
 ## Run selenium and chrome driver to scrape data from cloudbytes.dev
 import json
+import resource
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
+
+# With --single-process, Chrome segfaults while shutting down, after the page
+# work is done. Each crash would write a ~95 MB core file to /tmp, filling a
+# warm container's /tmp and memory. Chrome inherits this limit.
+resource.setrlimit(resource.RLIMIT_CORE, (0, 0))
 
 
 def handler(event=None, context=None):
@@ -14,6 +20,7 @@ def handler(event=None, context=None):
     chrome_options.add_argument("--disable-gpu")
     chrome_options.add_argument("--disable-dev-tools")
     chrome_options.add_argument("--no-zygote")
+    chrome_options.add_argument("--single-process")
     chrome_options.add_argument("window-size=2560x1440")
     chrome_options.add_argument("--user-data-dir=/tmp/chrome-user-data")
     chrome_options.add_argument("--remote-debugging-port=9222")
