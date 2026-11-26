@@ -24,7 +24,11 @@ def handler(event=None, context=None):
         chrome.get("https://cloudbytes.dev/")
         description = chrome.find_element(By.NAME, "description").get_attribute("content")
     finally:
-        chrome.quit()
+        try:
+            chrome.quit()
+        except Exception as exc:
+            # A failed cleanup must not replace the scrape's result or its error.
+            print(f"chrome.quit() failed: {exc!r}")
     print(description)
     return {
         "statusCode": 200,
