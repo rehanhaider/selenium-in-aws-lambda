@@ -12,9 +12,8 @@ from selenium.webdriver.common.by import By
 # TimeoutException and fails the invocation instead of Lambda killing it.
 PAGE_LOAD_TIMEOUT_SECONDS = 90
 
-# With --single-process, Chrome segfaults while shutting down, after the page
-# work is done. Each crash would write a ~95 MB core file to /tmp, filling a
-# warm container's /tmp and memory. Chrome inherits this limit.
+# Prevent Chrome from writing core dumps that can fill /tmp in a warm Lambda
+# container. Chrome inherits this limit.
 resource.setrlimit(resource.RLIMIT_CORE, (0, 0))
 
 
@@ -44,16 +43,13 @@ def handler(event=None, context=None):
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument("--disable-gpu")
     chrome_options.add_argument("--disable-dev-tools")
+    # On Lambda, multiprocess Chrome needs this flag to navigate successfully.
     chrome_options.add_argument("--no-zygote")
-    chrome_options.add_argument("--single-process")
-    chrome_options.add_argument("window-size=2560x1440")
+    chrome_options.add_argument("--window-size=2560,1440")
     # A fresh profile per invocation, so cookies and storage from one caller's
     # page do not carry into the next invocation in a warm container.
     user_data_dir = tempfile.mkdtemp(prefix="chrome-user-data-", dir="/tmp")
     chrome_options.add_argument(f"--user-data-dir={user_data_dir}")
-    chrome_options.add_argument("--remote-debugging-port=9222")
-    #chrome_options.add_argument("--data-path=/tmp/chrome-user-data")
-    #chrome_options.add_argument("--disk-cache-dir=/tmp/chrome-user-data")
     try:
         chrome = webdriver.Chrome(service=Service("/opt/chromedriver"), options=chrome_options)
         try:
