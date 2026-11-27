@@ -3,33 +3,31 @@ Relevant [blog post](https://cloudbytes.dev/articles/run-selenium-in-aws-lambda-
 
 # Using the GitHub repository directly
 
-You need AWS SAM CLI installed and AWS credentials configured.
+You need Node.js, Python 3.10 or later, Docker with Buildx, the AWS CLI, and configured AWS credentials. The target AWS account and region must be bootstrapped once with `npx cdk bootstrap`. The command uses the project-local CDK CLI installed by `npm ci`.
 
-Open your terminal and run the following command to clone the [repository](https://github.com/rehanhaider/selenium-in-aws-lambda).
+Clone the repository and install the CDK dependencies.
 
-```git
+```bash
 git clone https://github.com/rehanhaider/selenium-in-aws-lambda.git
-```
-
-Navigate to the app directory. 
-
-```bash
 cd selenium-in-aws-lambda/selenium
+npm ci
+python3 -m venv .venv && . .venv/bin/activate && pip install -r requirements-cdk.txt
 ```
 
-Build the app.
+Deploy the stack.
 
 ```bash
-sam build
+npx cdk deploy
 ```
 
-Test the app locally.
+The stack has no trigger. Attach your own or invoke the function directly by replacing `<FunctionName output>` with the name printed by CDK.
 
 ```bash
-sam local invoke
+aws lambda invoke --function-name '<FunctionName output>' --cli-binary-format raw-in-base64-out --payload '{}' out.json && cat out.json
 ```
 
-Deploy the app to AWS.
+Remove the stack when you're finished.
 
 ```bash
-sam deploy --guided
+npx cdk destroy
+```

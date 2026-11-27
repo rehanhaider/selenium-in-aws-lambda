@@ -1,0 +1,18 @@
+{
+  "app": "python3 cdk_app.py",
+  "watch": {
+    "include": ["**"],
+    "exclude": [
+      "README.md",
+      "cdk*.json",
+      "requirements*.txt",
+      "source.bat",
+      "**/__init__.py",
+      "**/__pycache__",
+      "tests",
+      ".venv",
+      "cdk.out",
+      "node_modules"
+    ]
+  }
+}
