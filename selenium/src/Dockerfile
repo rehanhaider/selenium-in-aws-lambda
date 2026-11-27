@@ -1,34 +1,23 @@
-FROM public.ecr.aws/lambda/python:3.9 as stage
+FROM public.ecr.aws/lambda/python:3.13 AS stage
 
-# Hack to install chromium dependencies
-RUN yum install -y -q sudo unzip
+RUN dnf install -y unzip && dnf clean all
 
-# Find the version of latest stable build of chromium from below
-# https://omahaproxy.appspot.com/
-# Then follow the instructions here in below URL to download old builds of Chrome/Chromium that are stable
-# Current stable version of Chromium
-ENV CHROMIUM_VERSION=1002910 
-# RUN yum install -y https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
-
-# Install Chromium
+ARG CHROME_VERSION=158.0.8127.88
 COPY install-browser.sh /tmp/
-RUN /usr/bin/bash /tmp/install-browser.sh
+RUN /bin/bash /tmp/install-browser.sh "$CHROME_VERSION"
 
-FROM public.ecr.aws/lambda/python:3.9 as base
+FROM public.ecr.aws/lambda/python:3.13 AS base
 
 # Shared libraries Chrome and chromedriver link against that the base image
 # lacks, plus fonts for text rendering
 COPY chrome-deps.txt /tmp/
-RUN yum install -y -q $(cat /tmp/chrome-deps.txt) \
-    && yum clean all \
-    && rm -rf /var/cache/yum
+RUN dnf install -y $(cat /tmp/chrome-deps.txt) && dnf clean all
 
 # Install Python dependencies for function
 COPY requirements.txt /tmp/
 RUN python3 -m pip install --no-cache-dir -q -r /tmp/requirements.txt
 
-
-COPY --from=stage /opt/chrome /opt/chrome
+COPY --from=stage /opt/chrome-headless-shell /opt/chrome-headless-shell
 COPY --from=stage /opt/chromedriver /opt/chromedriver
 COPY app.py ${LAMBDA_TASK_ROOT}
 

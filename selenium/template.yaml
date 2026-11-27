@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  python3.9
+  python3.13
 
   Sample SAM Template for selenium
 
@@ -27,7 +27,7 @@ Resources:
     Metadata:
       Dockerfile: Dockerfile
       DockerContext: ./src
-      DockerTag: python3.9-v1
+      DockerTag: python3.13-v1
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
