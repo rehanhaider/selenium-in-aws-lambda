@@ -1,5 +1,20 @@
-alsa-lib atk at-spi2-atk at-spi2-core avahi-libs cairo cups-libs dbus-libs
-elfutils-libs fribidi libdrm libglvnd libglvnd-egl libglvnd-glx libthai
-libwayland-client libwayland-server libX11 libXau libxcb libXcomposite
-libXdamage libXext libXfixes libxkbcommon libXrandr libXrender lz4 mesa-libgbm
-pango pixman systemd-libs liberation-fonts
+alsa-lib
+at-spi2-atk
+at-spi2-core
+atk
+dbus-libs
+dejavu-sans-fonts
+expat
+libX11
+libxcb
+libXcomposite
+libXdamage
+libXext
+libXfixes
+libxkbcommon
+libXrandr
+mesa-libgbm
+nspr
+nss
+nss-util
+systemd-libs
