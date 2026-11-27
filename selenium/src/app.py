@@ -6,7 +6,8 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 
-# Keep below the 120 s function timeout (template.yaml) so slow navigation raises before Lambda ends the invocation.
+# Keep below the function's 120 s timeout, so a slow navigation raises
+# TimeoutException and fails the invocation instead of Lambda killing it.
 PAGE_LOAD_TIMEOUT_SECONDS = 90
 
 # With --single-process, Chrome segfaults while shutting down, after the page
