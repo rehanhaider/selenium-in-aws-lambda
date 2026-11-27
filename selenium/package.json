@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "scripts": {
+    "synth": "cdk synth",
+    "deploy": "cdk deploy",
+    "destroy": "cdk destroy",
+    "cdk": "cdk"
+  },
+  "devDependencies": {
+    "aws-cdk": "2.1149.0"
+  }
+}
