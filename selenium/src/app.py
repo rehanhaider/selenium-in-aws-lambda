@@ -1,5 +1,7 @@
 # Use Selenium and ChromeDriver to read a page's meta description.
 import resource
+import shutil
+import tempfile
 from urllib.parse import urlsplit
 
 from selenium import webdriver
@@ -29,8 +31,8 @@ def handler(event=None, context=None):
     scheme = parsed_url.scheme.lower()
     if scheme not in ("http", "https", "data"):
         raise ValueError("url scheme must be http, https, or data")
-    if scheme in ("http", "https") and not parsed_url.netloc:
-        raise ValueError("http and https URLs must include a network location")
+    if scheme in ("http", "https") and not parsed_url.hostname:
+        raise ValueError("http and https URLs must include a host")
 
     chrome_options = webdriver.ChromeOptions()
     chrome_options.binary_location = "/opt/chrome/chrome"
@@ -42,21 +44,27 @@ def handler(event=None, context=None):
     chrome_options.add_argument("--no-zygote")
     chrome_options.add_argument("--single-process")
     chrome_options.add_argument("window-size=2560x1440")
-    chrome_options.add_argument("--user-data-dir=/tmp/chrome-user-data")
+    # A fresh profile per invocation, so cookies and storage from one caller's
+    # page do not carry into the next invocation in a warm container.
+    user_data_dir = tempfile.mkdtemp(prefix="chrome-user-data-", dir="/tmp")
+    chrome_options.add_argument(f"--user-data-dir={user_data_dir}")
     chrome_options.add_argument("--remote-debugging-port=9222")
     #chrome_options.add_argument("--data-path=/tmp/chrome-user-data")
     #chrome_options.add_argument("--disk-cache-dir=/tmp/chrome-user-data")
-    chrome = webdriver.Chrome(service=Service("/opt/chromedriver"), options=chrome_options)
     try:
-        chrome.set_page_load_timeout(PAGE_LOAD_TIMEOUT_SECONDS)
-        chrome.get(url)
-        description = chrome.find_element(
-            By.CSS_SELECTOR, 'meta[name="description"]'
-        ).get_attribute("content")
-    finally:
+        chrome = webdriver.Chrome(service=Service("/opt/chromedriver"), options=chrome_options)
         try:
-            chrome.quit()
-        except Exception as exc:
-            # A failed cleanup must not replace the scrape's result or its error.
-            print(f"chrome.quit() failed: {exc!r}")
+            chrome.set_page_load_timeout(PAGE_LOAD_TIMEOUT_SECONDS)
+            chrome.get(url)
+            description = chrome.find_element(
+                By.CSS_SELECTOR, 'meta[name="description"]'
+            ).get_attribute("content")
+        finally:
+            try:
+                chrome.quit()
+            except Exception as exc:
+                # A failed cleanup must not replace the scrape's result or its error.
+                print(f"chrome.quit() failed: {exc!r}")
+    finally:
+        shutil.rmtree(user_data_dir, ignore_errors=True)
     return {"url": url, "description": description}
