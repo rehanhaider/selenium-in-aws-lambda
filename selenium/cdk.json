@@ -1,11 +1,12 @@
 {
-  "app": "python3 cdk_app.py",
+  "app": "uv run --frozen python cdk_app.py",
   "watch": {
     "include": ["**"],
     "exclude": [
       "README.md",
       "cdk*.json",
-      "requirements*.txt",
+      "uv.lock",
+      "pyproject.toml",
       "source.bat",
       "**/__init__.py",
       "**/__pycache__",
