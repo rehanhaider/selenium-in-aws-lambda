@@ -35,7 +35,10 @@ def handler(event=None, context=None):
         raise ValueError("http and https URLs must include a host")
 
     chrome_options = webdriver.ChromeOptions()
-    chrome_options.binary_location = "/opt/chrome/chrome"
+    chrome_options.binary_location = "/opt/chrome-headless-shell/chrome-headless-shell"
+    # Tells chromedriver the binary is chrome-headless-shell, which it launches
+    # differently from full Chrome. Without it, session creation fails.
+    chrome_options.set_capability("browserName", "chrome-headless-shell")
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")

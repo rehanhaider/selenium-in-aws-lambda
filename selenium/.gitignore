@@ -188,7 +188,7 @@ celerybeat-schedule.*
 
 # Environments
 .env
-.venv
+.venv/
 env/
 venv/
 ENV/
@@ -240,5 +240,9 @@ $RECYCLE.BIN/
 # Build folder
 
 */build/*
+
+# AWS CDK
+cdk.out/
+node_modules/
 
 # End of https://www.gitignore.io/api/osx,linux,python,windows,pycharm,visualstudiocode
