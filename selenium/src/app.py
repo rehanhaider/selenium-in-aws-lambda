@@ -13,7 +13,7 @@ resource.setrlimit(resource.RLIMIT_CORE, (0, 0))
 
 def handler(event=None, context=None):
     chrome_options = webdriver.ChromeOptions()
-    chrome_options.binary_location = "/opt/chrome/chrome"
+    chrome_options.binary_location = "/opt/chrome-headless-shell/chrome-headless-shell"
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
