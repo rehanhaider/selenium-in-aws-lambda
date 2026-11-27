@@ -20,10 +20,10 @@ Deploy the stack.
 npx cdk deploy
 ```
 
-The stack has no trigger. Attach your own or invoke the function directly by replacing `<FunctionName output>` with the name printed by CDK.
+The stack has no trigger. Attach your own or invoke the function directly by replacing `<FunctionName output>` with the name printed by CDK. The event names the page to read, and the function returns its meta description as `{"url": ..., "description": ...}`. A missing or invalid `url` fails the invocation.
 
 ```bash
-aws lambda invoke --function-name '<FunctionName output>' --cli-binary-format raw-in-base64-out --payload '{}' out.json && cat out.json
+aws lambda invoke --function-name '<FunctionName output>' --cli-binary-format raw-in-base64-out --payload '{"url": "https://cloudbytes.dev/"}' out.json && cat out.json
 ```
 
 Remove the stack when you're finished.
