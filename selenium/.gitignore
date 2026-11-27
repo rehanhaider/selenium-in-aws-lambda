@@ -177,8 +177,7 @@ target/
 # Jupyter Notebook
 .ipynb_checkpoints
 
-# pyenv
-.python-version
+# pyenv (.python-version is tracked: it pins uv to the Lambda runtime's Python)
 
 # celery beat schedule file
 celerybeat-schedule.*
