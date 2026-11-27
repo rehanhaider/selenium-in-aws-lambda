@@ -19,6 +19,10 @@ for artifact in ("chrome-headless-shell", "chromedriver"):
     url = next((item["url"] for item in downloads if item["platform"] == "linux64"), None)
     if url is None:
         sys.exit(f"Chrome for Testing version {version} has no linux64 download for {artifact}")
+    # The manifest is fetched remotely: only accept the official artifact bucket.
+    expected = f"https://storage.googleapis.com/chrome-for-testing-public/{version}/linux64/"
+    if not url.startswith(expected):
+        sys.exit(f"Unexpected download URL for {artifact}: {url}")
     urls.append(url)
 print(*urls)
 ' "${1:?Pass CHROME_VERSION as the first argument}"
