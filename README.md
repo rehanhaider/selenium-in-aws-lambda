@@ -1,20 +1,20 @@
-Relevant [blog post](https://cloudbytes.dev/articles/run-selenium-in-aws-lambda-for-ui-testing) with detailed explanation.
+Relevant [blog post](https://cloudbytes.dev/snippets/run-selenium-in-aws-lambda-for-ui-testing) with detailed explanation.
 ------
 
 # Using the GitHub repository directly
 
-You need Node.js, Python 3.10 or later, Docker with Buildx, the AWS CLI, and configured AWS credentials. The target AWS account and region must be bootstrapped once with `npx cdk bootstrap`. The command uses the project-local CDK CLI installed by `npm ci`.
+You need Node.js, uv, Docker with Buildx, the AWS CLI, and configured AWS credentials.
 
-Clone the repository and install the CDK dependencies.
+Clone the repository and install the project-local CDK CLI and Python dependencies.
 
 ```bash
 git clone https://github.com/rehanhaider/selenium-in-aws-lambda.git
 cd selenium-in-aws-lambda/selenium
 npm ci
-python3 -m venv .venv && . .venv/bin/activate && pip install -r requirements-cdk.txt
+uv sync
 ```
 
-Deploy the stack.
+Run `npx cdk bootstrap` once for the target AWS account and region before your first deployment. Then deploy the stack.
 
 ```bash
 npx cdk deploy
