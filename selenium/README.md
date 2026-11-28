@@ -18,9 +18,11 @@ uv run pytest
 
 ## Check the container locally
 
+The image is x86_64, like the deployed function, because the browser download is linux64. On an ARM host, Docker emulates it.
+
 ```bash
-docker build -t selenium-lambda src
-docker run --rm --read-only --tmpfs /tmp -p 9000:8080 selenium-lambda
+docker build --platform linux/amd64 -t selenium-lambda src
+docker run --rm --platform linux/amd64 --read-only --tmpfs /tmp -p 9000:8080 selenium-lambda
 ```
 
 Send the sample event from this directory in a second terminal.
