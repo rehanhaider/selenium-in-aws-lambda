@@ -5,7 +5,7 @@
 - `events/event.json` is a sample invocation event.
 - `tests/` contains the unit tests.
 
-The handler accepts an event like `{"url": "https://cloudbytes.dev/"}`. It accepts `http`, `https`, and `data` URLs and returns `{"url": ..., "description": ...}` with the page's meta description. Invalid input raises an exception and fails the invocation.
+The handler accepts an event like `{"url": "https://cloudbytes.dev/"}`. It accepts `http`, `https`, and `data` URLs and returns `{"url": ..., "description": ...}` with the page's meta description. Invalid input raises an exception and fails the invocation, as does a page that has no `meta name="description"` element or doesn't finish loading within 90 seconds.
 
 ## Run the unit tests
 
